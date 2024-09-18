@@ -5,7 +5,17 @@ namespace HomeWork1
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()    // Дозволяє запити з будь-якого джерела
+                           .AllowAnyMethod()    // Дозволяє всі HTTP-методи (GET, POST тощо)
+                           .AllowAnyHeader();   // Дозволяє всі заголовки
+                });
+            });
             var app = builder.Build();
+            app.UseCors("AllowAll");
             app.UseStaticFiles();
             int number = 1;
             app.Use(async (context, next) =>
